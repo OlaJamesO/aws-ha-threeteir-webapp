@@ -1,10 +1,10 @@
 
-The cloudFomation Stack used throughout this project was created by Amazon Web Services.
+The CloudFomation Stack used throughout this was created by Amazon Web Services. 
 
 AWS Teams (2021) CloudFormation YAML Files & source code (Version 2.0) [Source code]. [Highly Available Web Application Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/3de93ad5-ebbe-4258-b977-b45cdfe661f1/en-US)
 
-
 # Highly Available Web Application Project Lab
+
 
 ### Overview
 
@@ -518,7 +518,7 @@ I have create a highly available, multi tier WordPress application hosting platf
 
 In this section, I will apply techniques to improve the performance of the application by Caching Database responses and a Content Delivery Network.
  
- # Section 8: Configure Caching
+ ## Configure Caching
  
  I created an [Elasticache for Memcached](https://aws.amazon.com/elasticache/memcached/) instance in Section 3. In this section I will configure WordPress to use that service. To improve the site's response time and to reduce the strain on your backend database, WordPress is configured to use Memcached as a caching layer for common requests. 
 
@@ -618,5 +618,6 @@ Using AWS auto scaling and the AWS Application Load Balancer I created a collect
 Finally, I added AWS CloudFront a global content delivery network. CloudFront speeds up the delivery of my websites, whether its static objects (e.g., images, style sheets, JavaScript, etc.) or dynamic content (e.g., videos, audio, motion graphics, etc.), to viewers across the globe.
 
 The outcome of this modular architecture design is a highly-available, distributed, and fault tolerate web application. 
+ 
  
 AWS Teams (2021) CloudFormation YAML Files & source code (Version 2.0) [Source code]. [Highly Available Web Application Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/3de93ad5-ebbe-4258-b977-b45cdfe661f1/en-US)
