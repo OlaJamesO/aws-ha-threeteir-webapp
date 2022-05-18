@@ -560,7 +560,7 @@ I will add dummy content to the website, by installing [WordPress Importer Plugi
 
 ![enter image description here](https://i.ibb.co/pygzmyz/image.png)
 
-After importing theme test the site respond time is lighting fast and  content loads up effortlessly on page refresh/reload testing. 
+After importing theme test the site respond time is lightning fast and  content loads up effortlessly on page refresh/reload testing. 
 ![enter image description here](https://i.ibb.co/4j7CSN6/image.png)
  
  Ran a quick test on the load balancer DNS `http://secti-wordp-9vf5jiejri0a-19248653.us-east-1.elb.amazonaws.com/` on [GTMetric](https://gtmetrix.com/) and the overall performance of the site was ok.  
