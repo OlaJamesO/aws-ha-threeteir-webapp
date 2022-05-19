@@ -55,7 +55,7 @@ Resources:
   ElastiCacheCluster:
     Type: AWS::ElastiCache::CacheCluster
     Properties: 
-      CacheNodeType: cache.m5.large
+      CacheNodeType: cache.t2.micro
       CacheSubnetGroupName: !Ref ElastiCacheSubnetGroup
       ClusterName: WP-Elasticache
       Engine: memcached

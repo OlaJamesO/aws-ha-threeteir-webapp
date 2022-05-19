@@ -651,7 +651,7 @@ Using AWS auto scaling and the AWS Application Load Balancer I created a collect
 
 Finally, I added AWS CloudFront a global content delivery network. CloudFront speeds up the delivery of my websites, whether its static objects (e.g., images, style sheets, JavaScript, etc.) or dynamic content (e.g., videos, audio, motion graphics, etc.), to viewers across the globe.
 
-The outcome of this modular architecture design is a highly-available, distributed, and fault tolerate web application. 
+The outcome of this modular architecture design is a highly-available, distributed, and fault tolerate web application..
  
  
 
