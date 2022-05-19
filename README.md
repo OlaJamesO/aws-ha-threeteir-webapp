@@ -654,4 +654,4 @@ Finally, I added AWS CloudFront a global content delivery network. CloudFront sp
 The outcome of this modular architecture design is a highly-available, distributed, and fault tolerate web application. 
  
  
-AWS Teams (2021) CloudFormation YAML Files & source code (Version 2.0) [Source code]. [Highly Available Web Application Workshop](https://catalog.us-east-1.prod.workshops.aws/workshops/3de93ad5-ebbe-4258-b977-b45cdfe661f1/en-US)
+
