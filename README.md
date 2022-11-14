@@ -1,4 +1,5 @@
 
+
 The CloudFomation Stack used throughout this project lab was written and created by Amazon Web Services.
 
 AWS CloudFormation YAML Files & source code (Version 2.0) [Source code]. [AWS](https://aws.amazon.com/training/digital/)
@@ -32,9 +33,6 @@ The sequence of steps followed in building the architecture are as follows.
 
 
 ### Launch CloudFormation Stack
-
-I will use the CloudFormation stack to create a virtual network spread across multiple availability zone, in my region of choice with a private Subnet for Database and Public subnet for public access.
- 
 [Launch VPC Stack](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=module1-vpc&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module1.yaml) *The CloudFormation Stack will create a VPC, Public/Private Subnets in two Availability Zones, and an Internet Gateway and two NAT Gateways. It will then handle association and routing of gateways and subnets.*
 
 ![Specify stack details](https://i.ibb.co/6sGLtzP/image.png)
@@ -42,49 +40,31 @@ I will use the CloudFormation stack to create a virtual network spread across mu
 the stack has already prepopulated all the field for me and I just made a few modifications and then I created the stack. 
 ![creation progress](https://i.ibb.co/tmrgNss/image.png)
 
-After a few minute the CloudFormation Stack was ready and showed a status of *CREATE_COMPLETE*.
 ![enter image description here](https://i.ibb.co/DL79QDP/image.png)
-
-## Verifying my configuration
-
-
 **VPC created**
 ![enter image description here](https://i.ibb.co/7K0pHvx/vpc-verification.png)
-
 **VPC Subnets created**
 ![enter image description here](https://i.ibb.co/jbLnxPv/image.png)
-
 **VPC Internet Gateway created**
 ![enter image description here](https://i.ibb.co/crRPhY6/image.png)
-
 **VPC NAT Gateway created**
 ![NAT Gateway](https://i.ibb.co/FJYLZDD/image.png)
 
-### What I have done so far 
+### What has been done so far 
 
-I have created a virtual private cloud network across two availability zones within an AWS region. I have created six subnets, three in each availability zone, and have configured a route so that the internet can communicate with resources in the public subnets and vice versa. The application subnets have been configured, via routing table, to communicate with the internet via NAT gateways in the public subnets, and the data subnets can only communicate with resources in the six subnets, but not the internet.
+ 
 
-### Next 
-
-Now I am ready to move to the next section where I will deploy a highly available database for use by WordPress.
+ - Created a virtual private cloud network across two availability zones within an AWS region. 
+ -  Created six subnets, three in each availability zone, with a configured a route so that internet can communicate with resources in the public subnets and vice versa. 
+ - The application subnets have been configured, via routing table, to communicate with the internet via NAT gateways in the public subnets, and the data subnets can only communicate with resources in the six subnets, but not the internet.
 
 # Part 2: Build the Data Tier
-
-> Now that I have created a virtual network across multiple data centers I will create a resilient, cached, highly-available data tier designed to support my WordPress installation. To do this I will, over the next 3 sections, create an active / passive database deployment using  [Amazon Relational Database Service](https://aws.amazon.com/rds/) (RDS) and then add caching to the database using the managed caching service  [Amazon ElastiCache](https://aws.amazon.com/elasticache/)
-
-## Set up RDS database
-
-Amazon Relational Database Service (Amazon RDS) is a web service that makes it easier to set up, operate, and scale a relational database in the AWS Cloud. It provides cost-efficient, resizable capacity for an industry-standard relational database and manages common database administration tasks. Amazon Aurora is a MySQL and PostgreSQL-compatible relational database built for the cloud, that combines the performance and availability of traditional enterprise databases with the simplicity and cost-effectiveness of open source databases.
-
+Create a resilient, cached, highly-available data tier designed to support WordPress installation. To do this I will, over the next 3 sections, create an active / passive database deployment using  [Amazon Relational Database Service](https://aws.amazon.com/rds/) (RDS) and then add caching to the database using the managed caching service  [Amazon ElastiCache](https://aws.amazon.com/elasticache/)
 
 ### Here is what I will create in this Section
 ![database tier](https://i.ibb.co/L6xC0gP/section2.png)
-I will deploy a highly available relational database across availability zones and in DB Subnets using Amazon RDS. I will use CloudFormation to automate the resource deployment. 
 
 ### Launch CloudFormation Stack
-
-I will use the CloudFormation stack to create  MySQL database using Amazon Aurora in RDS in multiple availability zones, as well as security groups and subnet groups for communication to a client server.
-
 [Launch Stack](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=module2-rds&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module2.yaml)
 
 ![enter image description here](https://i.ibb.co/yqvDTVN/image.png)
@@ -96,26 +76,18 @@ I will use the CloudFormation stack to create  MySQL database using Amazon Auror
 ![enter image description here](https://i.ibb.co/9YSVVLt/image.png)
 
 **Creation complete** 
-
-after a few minutes the CloudFormation Stack will show status of _CREATE_COMPLETE_.
 ![enter image description here](https://i.ibb.co/qjr4FY2/image.png)
-
-I copied the value for the the key named **DatabaseClusterEndpoint** in the output tab into a notepad as the value will be required in future section.
-
-> A cluster endpoint (or writer endpoint) for an Aurora DB cluster connects to the current primary DB instance for that DB cluster.
-
+ **DatabaseClusterEndpoint** 
 ![enter image description here](https://i.ibb.co/7Y424FQ/image.png)
 
 ## Verifying my configuration
 
-My active / passive database should now be available and running in two different availability zones, waiting for connections from any EC2 resource with the client security group associated to it.
-
+Active / passive database 
 **RDS**
-
 I clicked on the **DatabaseCluster** _Physical ID_ within the **Resources** tab to open the RDS console in a new tab 
 ![enter image description here](https://i.ibb.co/0GkhXqJ/image.png)
 
-You can see the newly created Aurora RDS MySQL Highly available, Multi-AZ Cluster.
+The newly created Aurora RDS MySQL Highly available, Multi-AZ Cluster.
 - The _Writer_ and a _Reader_ Instance are in different Availability Zones
 - The Cluster Endpoint  points to the current Writer instance.
 - The Reader Endpoint points to the Reader instance.		
@@ -124,38 +96,28 @@ You can see the newly created Aurora RDS MySQL Highly available, Multi-AZ Cluste
 
 **Security Group**
 
-I clicked on the **WordPressDatabaseClientSG** _Physical ID_ within the **Resources** tab to open the RDS console in a new tab 
+ **WordPressDatabaseClientSG** _Physical ID_ within the **Resources** tab to open the RDS console in a new tab 
 ![enter image description here](https://i.ibb.co/xmx6t9F/image.png)
-I Select the Security Group with name **WP Database SG**. This is the security group for the Database cluster I just created.
+ **WP Database SG**. This is the security group for the Database cluster I just created.
 
 -   The  **Inbound rules**  for the security group only allow TCP connection on port 3306 from  **WP Database Client SG**  Security Group.
 -   Only Instance/service which are part of  **WP Database Client SG**  Security Group will have access to the Database.
 -   The application servers I will create in Section 7 will be assigned  **WP Database Client SG**  to allow access to Database.
-
-
 ![enter image description here](https://i.ibb.co/NLqSTF0/image.png)
 
 ## Next step 
 
-WordPress uses its database to store articles, users, and configuration information. This can result in a lot of unnecessary queries against the database which consistently return the same data set. To offset the strain on the database and improve performance of the WordPress web application I'll add a caching layer for common SQL requests.
 
 ## Set up Elasticache for Memcached
 
-> Amazon ElastiCache allows you to seamlessly set up, run, and scale popular open-source compatible in-memory data stores in the cloud. Amazon ElastiCache is a popular choice for real-time use cases like Caching, Session Stores, Gaming, Geospatial Services, Real-Time Analytics, and Queuing. Amazon ElastiCache offers fully managed Redis and Memcached for your most demanding applications that require sub-millisecond response times.
-
+> Amazon ElastiCache allows you to seamlessly set up, run, and scale popular open-source compatible in-memory data stores in the cloud. 
 ### Here is what you will create in this Module
 ![enter image description here](https://i.ibb.co/xF1PP4W/section3.png)
 
 ### Launch CloudFormation Stack
-
-I will use the  CloudFormation stack to create a Memcached cluster, then create a client and a server security group to protect the Memcached cluster.
-
 [Launch stack](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=module3-elasticache&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module3.yaml)
 
 In **Specify stack details**
-
--   Under  the **Parameters**, I selected the Data Tier subnets:  **Wordpress- Data Subnet A (AZ1)**  and  **Wordpress- Data Subnet B (AZ2)**  from the drop down.
-
 ![enter image description here](https://i.ibb.co/3k7H0XN/image.png)
 
 **Creation in progress**
@@ -167,7 +129,7 @@ In **Specify stack details**
 ## Verifying my configuration
 
 **ElasticCache Security Groups**
-Under the **Resources** tab I clicked on the **ElastiCacheClientSecurityGroup** _Physical ID_ to open EC2 console in the new tab.
+Under the **Resources** **ElastiCacheClientSecurityGroup** _Physical ID_ to open EC2 console in the new tab.
 ![enter image description here](https://i.ibb.co/cw7RyMP/image.png)
 
 1.   Two security groups,  _WP Cache Client SG_  and  _WP Cache SG_, was created in this section.
@@ -179,8 +141,7 @@ Under the **Resources** tab I clicked on the **ElastiCacheClientSecurityGroup** 
 ![enter image description here](https://i.ibb.co/Rgpk8NZ/image.png)
 
 **Memcached setup**
-
-Under the **Resources** tab I clicked on the **WordPressDatabaseClientSG,** _Physical ID_ to open ElastiCache console in the new tab.
+Under the **Resources**  **WordPressDatabaseClientSG,** _Physical ID_ to open ElastiCache console in the new tab.
 
 ![enter image description here](https://i.ibb.co/Cthq6C3/image.png)
 
@@ -196,15 +157,11 @@ In the next set of labs I will build the application tier which will deploy Word
 
 # Part 3: Create the shared filesystem
 
-> Amazon Elastic Filesystem (EFS) provides a simple, serverless, set-and-forget, elastic file system that lets you share file data without provisioning or managing storage. It can be used with AWS Cloud services and on-premises resources, and is built to scale on demand to petabytes without disrupting applications. With Amazon EFS, you can grow and shrink your file systems automatically as you add and remove files, eliminating the need to provision and manage capacity to accommodate growth.
-
+> Amazon Elastic Filesystem (EFS) provides a simple, serverless, set-and-forget, elastic file system that lets you share file data without provisioning or managing storage.
 ### Here is what I will create in this section 
 ![enter image description here](https://i.ibb.co/r42Zcg6/section4.png)
 
 ### Launch CloudFormation Stack
-
-I will use the CloudFormation stack to create an Elastic File System along with two Mount Targets for your Application servers. It will also create a client and a server security group to protect the provisioned Elastic File System.
-
 [Launch Stack](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=module4-efs&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module4.yaml)
 
 **Creation in progress**
@@ -216,7 +173,7 @@ I will use the CloudFormation stack to create an Elastic File System along with 
 
 **Filesystem security groups**
 
-Under the **Resources** tab I clicked on the ****EFSSecurityClientGroup,** _Physical ID_ to open ElastiCache console in the new tab.
+Under the **Resources** ****EFSSecurityClientGroup,** _Physical ID_ to open ElastiCache console in the new tab.
 ![enter image description here](https://i.ibb.co/T2jfhJ3/image.png)
  
 1.   The file system has two security groups,  _WP FS Client SG_  and  _WP FS SG_, created in this module.
@@ -244,7 +201,7 @@ in the next section I will create the application servers that will connect to a
 
 # Part 4: Building the Application Tier
 
-I  have created a shared filesystem, a central highly available database, and a caching layer to improve application response times.
+Created a shared filesystem, a central highly available database, and a caching layer to improve application response times.
 
 It is now time to deploy the WordPress application itself in a highly available fashion. To do this I will create an EC2 AutoScaling group which will add and remove servers to a fleet of application servers in response to network traffic. I will also deploy a load balancer to distribute traffic across these instances as they are added and removed. The load balancer will provide a single endpoint for the users even as the backend application servers are scaled according to user traffic demands.
 
@@ -257,13 +214,10 @@ It is now time to deploy the WordPress application itself in a highly available 
 ![enter image description here](https://i.ibb.co/vq034wB/section5.png)
 
 ### Launch CloudFormation Stack
-
-I will use the  CloudFormation stack to create an Elastic File System along with two Mount Targets for the Application servers. the stack will also create a client and a server security group to protect the provisioned Elastic File System.
-
 [Launch stack](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=module5-elb&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module5.yaml)
 
 In the **Specify stack details**
--   Under  **Parameters**, I will be launching the Application Load Balancer in the Public subnets: selecting  **James-O-Wordpress-Project Public Subnet A (AZ1) & Public Subnet B (AZ2)**  from the drop down.
+-   Under  **Parameters**,  Load Balancer in the Public subnets: selecting  **James-O-Wordpress-Project Public Subnet A (AZ1) & Public Subnet B (AZ2)**  from the drop down.
 
 ![enter image description here](https://i.ibb.co/DbfPvy2/image.png)
 
@@ -277,11 +231,11 @@ In the **Specify stack details**
 
 **Application Load Balancer Security group**
 
- On the  **Resources**  tab,  I will  click on the  _Physical ID_ of the **WPLoadBalancerSecurityGroup**,  to open EC2 console in the new tab.
+ On the  **Resources**  tab,  _Physical ID_ of the **WPLoadBalancerSecurityGroup**,  to open EC2 console in the new tab.
 
 ![enter image description here](https://i.ibb.co/CQNmTrD/image.png)
 
-1.  As seen below the security group,  _WPLoadBalancerSecurityGroup_  has been created in this section.
+ _ WPLoadBalancerSecurityGroup_  has been created in this section.
        -   under the  **Inbound Rules** tab  of the security group, it has one rule allowing traffic on port 80.  allowing global public access from port 0.0.0.0/0.
     -   I would normally restrict the inbound connections to the load balancer from my workstation only, by updating update the  **Inbound Rules**  to set the Source IP to my workstation for tighter security control.
      
@@ -289,7 +243,7 @@ In the **Specify stack details**
 
 **Application Load Balancer Security group**
 
-- I will copy  **DNS name**  of the load balancer,  as it will be required in next section.
+- Copied   **DNS name**  of the load balancer,  as it will be required in next section.
 -   The load balancer has load balancer nodes in two availability zones, in the public subnets I selected during the creation step.
 
 ![enter image description here](https://i.ibb.co/qMjHhVm/image.png)
@@ -313,7 +267,7 @@ In the next section I will create the Launch configuration which will be used to
 
 # Part 5: Create a launch configuration
 
-> A launch configuration is an instance configuration template that an Auto Scaling group, which I will create in next section, uses to launch EC2 instances. When you create a launch configuration, you specify information for the instances, Including the ID of the Amazon Machine Image (AMI), the instance type, one or more security groups, and a block device mapping. It is similar to the information you provide when you launch and EC2 instance.
+> A launch configuration is an instance configuration template that an Auto Scaling group, which I will create in next section, uses to launch EC2 instances. 
 
 ### Here is what I will create in this section 
 
@@ -355,7 +309,7 @@ and finally I provisioned the stack.
 
 ## Verify  Configuration
 
-I will click on the _Physical ID_ of the **WordPressLaunchConfig**, under the **Resources** tab, to open a new EC2 console in the new tab.
+ _Physical ID_ of the **WordPressLaunchConfig**, under the **Resources** tab, to open a new EC2 console in the new tab.
 ![enter image description here](https://i.ibb.co/ph8G9xy/image.png)
 
 -   Launch configuration page shows the  _AMI ID_,  _Instance Type_  and  _Security Groups_  for the instance that will be launched using this Launch Configuration.
@@ -366,9 +320,9 @@ I will click on the _Physical ID_ of the **WordPressLaunchConfig**, under the **
 
 ![enter image description here](https://i.ibb.co/f8MpVtJ/image.png)
 
- I want to **view user data**  to verify the script that will run when the instance is launch to do instance configuration for WordPress Instance launched using this launch config.
+ **view user data**  to verify the script that will run when the instance is launch to do instance configuration for WordPress Instance launched using this launch config.
 
- -   I am installing PHP and WordPress
+ -   Installing PHP and WordPress
  -   Mounting the NFS mount point
  -   Configuring WordPress
  -   Configuring and enabling OPcache (*OPcache is a caching engine built into PHP. When enabled, it **dramatically increases the performance of websites that utilize PHP**.*)
@@ -469,7 +423,7 @@ service httpd start
 
 **Security Group**
 
-I will click on Physical ID for _WebTierSecurityGroup_ under **Resources** tab of the provisioned stack for this section to open a new EC2 page.
+Physical ID for _WebTierSecurityGroup_ under **Resources** tab of the provisioned stack for this section to open a new EC2 page.
 ![enter image description here](https://i.ibb.co/zQ3rCHw/image.png)
 
 the _Wordpress Servers Security Group_ only allows incoming requests from Application Load Balancer Security group. Only Application load balance can communicate with the Wordpress servers
@@ -488,8 +442,6 @@ In the next section I will create the Auto Scaling group.
 ### Here is what I will create in this Section 
 ![enter image description here](https://i.ibb.co/5FsGbvC/section7.png)
 
-I will use CloudFormation to automate the resource deployment. The CloudFormation Stack will create an Auto Scaling group for your EC2 instances. This will also include Amazon EC2 Auto Scaling features such as health check replacements and scaling policies.
-
 [Launch Stack](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=module7-autoscalinggroup&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module7.yaml)
 
 **Creation in progress**
@@ -503,7 +455,7 @@ I will use CloudFormation to automate the resource deployment. The CloudFormatio
 
 **Auto Scaling groups**
 
-  I will click on the _Physical ID_ for **AutoScalingGroup**, on the **Resources** tab, to open EC2 console in the new tab.
+  _Physical ID_ for **AutoScalingGroup**, on the **Resources** tab, to open EC2 console in the new tab.
 
 ![enter image description here](https://i.ibb.co/23NwRdz/image.png)
 
@@ -527,7 +479,7 @@ The created Auto Scaling Group has desired(4), minimum(4) and maximum(8) capacit
 
 **Load Balancer**
 
-I am going to get the load balancer DNS name
+ Load balancer DNS name
 
 ![enter image description here](https://i.ibb.co/qySCLss/image.png)
 
@@ -541,7 +493,7 @@ Copied and pasted the DNS name `Secti-WordP-9VF5JIEJRI0A-19248653.us-east-1.elb.
 
 I have now created a highly-available auto-scaling deployment of WordPress that will scale in & out in response to client traffic hitting the website.
 
-Next I am going to configure the WordPress caching.
+Next - configure the WordPress caching.
 
 
 # Part 7: Speed up the Website
@@ -551,9 +503,9 @@ In this section, I will apply techniques to improve the performance of the appli
  
  ## Configure Caching
  
- I created an [Elasticache for Memcached](https://aws.amazon.com/elasticache/memcached/) instance in Section 3. In this section I will configure WordPress to use that service. To improve the site's response time and to reduce the strain on your backend database, WordPress is configured to use Memcached as a caching layer for common requests. 
+Created an [Elasticache for Memcached](https://aws.amazon.com/elasticache/memcached/) instance in Section 3. In this section I will configure WordPress to use that service. To improve the site's response time and to reduce the strain on your backend database, WordPress is configured to use Memcached as a caching layer for common requests. 
 
-I will paste in the DNS name from the load balancer into brower so that I can login wordpress`Secti-WordP-9VF5JIEJRI0A-19248653.us-east-1.elb.amazonaws.com`
+cpoy and paste the DNS name from the load balancer into brower to login wordpress`Secti-WordP-9VF5JIEJRI0A-19248653.us-east-1.elb.amazonaws.com`
 
 ![enter image description here](https://i.ibb.co/3prMw2Z/image.png)
 
@@ -574,7 +526,7 @@ In the left menu under **Performance**, I will click on **General Settings**. fo
 
 ![enter image description here](https://i.ibb.co/2gfVPW2/image.png)
 
-1. I will then open the  **[AWS ElastiCache Console](https://console.aws.amazon.com/elasticache)** link in a new tab and log in to my AWS account. This will open ElastiCache console in the new tab. In the left menu I will click on  **Memcached**  and select  _wp-elasticache_  cluster then copy the configuration endpoint for  _wp-elasticache_  to a clipboard.
+1. open the  **[AWS ElastiCache Console](https://console.aws.amazon.com/elasticache)** link in a new tab and log in to my AWS account. This will open ElastiCache console in the new tab. In the left menu I will click on  **Memcached**  and select  _wp-elasticache_  cluster then copy the configuration endpoint for  _wp-elasticache_  to a clipboard.
 
 ![enter image description here](https://i.ibb.co/HxHrNVz/image.png)
 
@@ -583,7 +535,7 @@ In the left menu under **Performance**, I will click on **General Settings**. fo
 1.  Go back to the WordPress management tab. In the left menu I select  **Performance**, then click on  _Database Cache_  and replace the *Memcached hostname:port/Ip:port* with the value copied in the previous step. I'll then click on the "Test" button to confirm the connection is successfully made and "Test Passed" message is displayed.
 ![enter image description here](https://i.ibb.co/BKzW1rQ/image.png)
 
-Then I 'll scroll down to the bottom of the page and click on  _Save all settings_  on the left. The following message was displayed to indicate Database caching has been enabled.
+Then  scroll down to the bottom of the page and click on  _Save all settings_  on the left. The following message was displayed to indicate Database caching has been enabled.
 
 ![enter image description here](https://i.ibb.co/3SFXFy9/image.png)
 
@@ -599,18 +551,18 @@ After importing theme test the site respond time is lightning fast and  content 
  Ran a quick test on the load balancer DNS `http://secti-wordp-9vf5jiejri0a-19248653.us-east-1.elb.amazonaws.com/` on [GTMetric](https://gtmetrix.com/) and the overall performance of the site was ok.  
 ![enter image description here](https://i.ibb.co/Sr0jnvn/image.png)
 
-Then I ran another speed test on the load balancer DNS from  [pingdom](tools.pingdom.com) site and the result is good. 
+speed test on the load balancer DNS from  [pingdom](tools.pingdom.com) site and the result is good. 
 
 ![enter image description here](https://i.ibb.co/cbPWg6n/image.png)
 
 # Part 8: Add Content Delivery Network
 
-> Amazon CloudFront can speed up the delivery of your websites, whether its static objects (e.g., images, style sheets, JavaScript, etc.) or dynamic content (e.g., videos, audio, motion graphics, etc.), to viewers across the globe. The CDN offers a multi-tier cache by default that improves latency and lowers the load on origin servers when the object is not already cached at the Edge.
+> Amazon CloudFront can speed up the delivery of your websites, whether its static objects (e.g., images, style sheets, JavaScript, etc.) or dynamic content (e.g., videos, audio, motion graphics, etc.), to viewers across the globe. 
 
 ### Here is what I will create in the section
 ![enter image description here](https://i.ibb.co/1qnfCcL/section9.png)
 
-In the previous section, I added caching to the WordPress configuration to cache frequently accessed database queries. In this section I will add a content delivery network using [Amazon CloudFront](https://aws.amazon.com/cloudfront/) to speed up global delivery of the application.
+ In this section I will add a content delivery network using [Amazon CloudFront](https://aws.amazon.com/cloudfront/) to speed up global delivery of the application.
 
 [launch Stack](https://us-east-1.console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/create/template?stackName=module9-cloudfront&templateURL=https://ee-assets-prod-us-east-1.s3.amazonaws.com/modules/402582136e8b4a63866212aa6dc0e6e3/v1/module9.yaml)
 The CloudFormation Stack will create a CloudFront distribution with the Elastic Load Balancer as the origin. This load balancer was created in Section 5 earlier.
